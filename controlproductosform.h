@@ -20,8 +20,6 @@ public:
     explicit ControlProductosForm(QWidget *parent = nullptr);
     int getFilaID();
     void configurarTabla();
-    Producto fromDBToObject(int index);
-    void fromObjectToDB (Producto &p1);
     ~ControlProductosForm();
 
 private slots:

@@ -22,6 +22,7 @@ SOURCES += \
     administrador.cpp \
     controlproductosform.cpp \
     controlvendedoresform.cpp \
+    databasefunctions.cpp \
     main.cpp \
     dialog.cpp \
     mainwindow.cpp \
@@ -35,6 +36,7 @@ HEADERS += \
     administrador.h \
     controlproductosform.h \
     controlvendedoresform.h \
+    databasefunctions.h \
     dialog.h \
     mainwindow.h \
     modificarproductodialog.h \
