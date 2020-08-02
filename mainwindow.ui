@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>690</width>
+    <height>350</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Ventana Principal</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QMdiArea" name="mdiArea"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>690</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuAcciones">
+    <property name="title">
+     <string>Acciones</string>
+    </property>
+    <addaction name="actionModificar_Producto"/>
+    <addaction name="actionMostrar_Productos"/>
+    <addaction name="separator"/>
+    <addaction name="actionRegistrar_Productos"/>
+    <addaction name="actionMostrar_Usuarios"/>
+    <addaction name="actionRegistrar_Usuarios"/>
+    <addaction name="separator"/>
+    <addaction name="actionCerrarSesion"/>
+    <addaction name="actionSalir"/>
+   </widget>
+   <widget class="QMenu" name="menuAyuda">
+    <property name="title">
+     <string>Ayuda</string>
+    </property>
+    <addaction name="actionAcerca_de"/>
+   </widget>
+   <addaction name="menuAcciones"/>
+   <addaction name="menuAyuda"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionMostrar_Usuarios">
+   <property name="text">
+    <string>Mostrar Usuarios</string>
+   </property>
+   <property name="toolTip">
+    <string>Mostrar Usuarios</string>
+   </property>
+  </action>
+  <action name="actionCerrarSesion">
+   <property name="text">
+    <string>Cerrar sesion</string>
+   </property>
+  </action>
+  <action name="actionAcerca_de">
+   <property name="text">
+    <string>Acerca de</string>
+   </property>
+  </action>
+  <action name="actionMostrar_Productos">
+   <property name="text">
+    <string>Mostrar Productos</string>
+   </property>
+  </action>
+  <action name="actionRegistrar_Productos">
+   <property name="text">
+    <string>Registrar Producto</string>
+   </property>
+  </action>
+  <action name="actionRegistrar_Usuarios">
+   <property name="text">
+    <string>Registrar Usuario</string>
+   </property>
+  </action>
+  <action name="actionSalir">
+   <property name="text">
+    <string>Salir</string>
+   </property>
+  </action>
+  <action name="actionModificar_Producto">
+   <property name="text">
+    <string>Modificar Producto</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
