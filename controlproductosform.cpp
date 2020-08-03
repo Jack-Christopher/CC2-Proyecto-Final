@@ -21,7 +21,6 @@ ControlProductosForm::~ControlProductosForm()
 
 void ControlProductosForm::configurarTabla()
 {
-
     modeloProducto = new QSqlTableModel(this);
     modeloProducto->setTable("producto");
     modeloProducto->select();
@@ -30,7 +29,8 @@ void ControlProductosForm::configurarTabla()
     modeloProducto->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
     modeloProducto->setHeaderData(1, Qt::Horizontal, QObject::tr("Nombre"));
     modeloProducto->setHeaderData(2, Qt::Horizontal, QObject::tr("Marca"));
-    modeloProducto->setHeaderData(3, Qt::Horizontal, QObject::tr("Cantidad"));
+    modeloProducto->setHeaderData(3, Qt::Horizontal, QObject::tr("Precio"));
+    modeloProducto->setHeaderData(4, Qt::Horizontal, QObject::tr("Cantidad"));
     ui->tableViewProductos->setModel(modeloProducto);
 }
 

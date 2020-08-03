@@ -8,22 +8,29 @@
 #include <QDebug>
 
 
-#define DRIVER "QSQLITE"
-#define NOMBRE_BASE_DATOS "./data.db"
+namespace databaseInfo
+{
+    const static QString DRIVER = "QSQLITE";
+    const static QString NOMBRE_BASE_DATOS  = "./data.db";
+}
+
 
 int creaBaseDatos()
 {
-    if (!QSqlDatabase::isDriverAvailable(DRIVER))
+    if (!QSqlDatabase::isDriverAvailable(databaseInfo::DRIVER))
     {
         qDebug() << "Driver no existe";
         return -1;
     }
-    auto db = QSqlDatabase::addDatabase(DRIVER);
-    db.setDatabaseName(NOMBRE_BASE_DATOS);
-    if (!db.open())
+    else
     {
-        qDebug() << db.lastError().text();
-        return -2;
+        auto db = QSqlDatabase::addDatabase(databaseInfo::DRIVER);
+        db.setDatabaseName(databaseInfo::NOMBRE_BASE_DATOS);
+        if (!db.open())
+        {
+            qDebug() << db.lastError().text();
+            return -2;
+        }
     }
     return 0;
 }
@@ -45,19 +52,20 @@ void configuraBaseDatos()
 void main(int argc, char *argv[])
 {
     int Salir = 0;
+
+    const int resultado = creaBaseDatos();
+    if (resultado < 0)
+    {
+        return ;
+    }
+    configuraBaseDatos();
+
+    std::unique_ptr<QApplication> aplicacion;
+    aplicacion = std::make_unique<QApplication> (argc, argv);
+
     while(Salir != 2)
     {
-        QApplication a(argc, argv);
-
-        const int resultado = creaBaseDatos();
-        if (resultado < 0)
-        {
-            return ;
-        }
-
-        configuraBaseDatos();
-
-        a.setStyle("fusion");
+        aplicacion->setStyle("fusion");
 
         Dialog login;
 
@@ -70,7 +78,7 @@ void main(int argc, char *argv[])
         mainWindow.setPrivilegios(login.getIsAdmin());
         mainWindow.show();
 
-        a.exec();
+        aplicacion->exec();
         Salir = mainWindow.getStatus();
     }
 }

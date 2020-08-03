@@ -56,8 +56,6 @@ Dialog::~Dialog()
 void Dialog::on_buttonBoxLogin_accepted()
 {
 
-    QSqlQuery q;
-
     bool isAdministrador = ui->checkBoxIsAdmin->checkState();
 
     QString nombre = ui->usuarioLineEdit->text();
