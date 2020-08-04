@@ -28,7 +28,6 @@ public:
     void  operator= (Producto newProducto);
 
     void operator-- (int n);
-
 };
 
 #endif // PRODUCTO_H

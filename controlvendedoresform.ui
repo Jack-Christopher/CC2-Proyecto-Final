@@ -37,7 +37,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButtonDarPrivilegios">
+      <widget class="QPushButton" name="pushButtonCambiarPrivilegios">
        <property name="text">
         <string>Dar/Quitar Privilegios</string>
        </property>

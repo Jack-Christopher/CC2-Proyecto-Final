@@ -40,31 +40,41 @@ void ControlVendedoresForm::on_pushButtonEliminarU_clicked()
     configurarTabla();
 }
 
+void ControlVendedoresForm::givePrivilegios(int fila)
+{
+    QSqlQuery q;
 
-void ControlVendedoresForm::on_pushButtonDarPrivilegios_clicked()
+    q.exec(QString("UPDATE vendedor set isAdmin='%1'  WHERE id='%2'")
+           .arg("Administrador")
+           .arg(fila));
+
+}
+
+void ControlVendedoresForm::removePrivilegios(int fila)
+{
+    QSqlQuery q;
+
+    q.exec(QString("UPDATE vendedor set isAdmin='%1'  WHERE id='%2'")
+           .arg("No Administrador")
+           .arg(fila));
+}
+
+
+void ControlVendedoresForm::on_pushButtonCambiarPrivilegios_clicked()
 {
     QSqlQuery q;
 
     q.exec(QString("SELECT isAdmin FROM vendedor WHERE id='%1'")
            .arg(filaID));
     q.first();
-    QString  esAdmin;
-    esAdmin= q.value(0).toString();
+    QString esAdmin;
+    esAdmin = q.value(0).toString();
 
-    bool dar = esAdmin == "Administrador";
+    void (*cambiar)(int);
 
-    if (dar)
-    {
-        q.exec(QString("UPDATE vendedor set isAdmin='%1'  WHERE id='%2'")
-               .arg("No Administrador")
-               .arg(filaID));
-    }
-    else
-    {
-        q.exec(QString("UPDATE vendedor set isAdmin='%1'  WHERE id='%2'")
-               .arg("Administrador")
-               .arg(filaID));
-    }
+    (esAdmin == "Administrador")?(cambiar = removePrivilegios):(cambiar = givePrivilegios);
+
+    cambiar(filaID);
 
     delete modeloVendedor;
     configurarTabla();
@@ -79,7 +89,4 @@ int ControlVendedoresForm::getFilaID()
 {
     return filaID;
 }
-
-
-
 

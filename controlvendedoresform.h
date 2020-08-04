@@ -17,12 +17,15 @@ public:
     explicit ControlVendedoresForm(QWidget *parent = nullptr);
     void configurarTabla();
     int getFilaID();
+    static void givePrivilegios(int fila);
+    static void removePrivilegios(int fila);
+
     ~ControlVendedoresForm();
 
 private slots:
     void on_pushButtonEliminarU_clicked();
 
-    void on_pushButtonDarPrivilegios_clicked();
+    void on_pushButtonCambiarPrivilegios_clicked();
 
     void on_tableViewVendedor_clicked(const QModelIndex &index);
 

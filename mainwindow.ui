@@ -33,10 +33,10 @@
     <property name="title">
      <string>Acciones</string>
     </property>
-    <addaction name="actionModificar_Producto"/>
     <addaction name="actionMostrar_Productos"/>
     <addaction name="separator"/>
     <addaction name="actionRegistrar_Productos"/>
+    <addaction name="actionModificar_Producto"/>
     <addaction name="actionMostrar_Usuarios"/>
     <addaction name="actionRegistrar_Usuarios"/>
     <addaction name="separator"/>

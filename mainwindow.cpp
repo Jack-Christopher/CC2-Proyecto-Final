@@ -119,6 +119,7 @@ void MainWindow::setPrivilegios(bool isAdministrador)
         ui->actionMostrar_Usuarios->setEnabled(false);
         ui->actionRegistrar_Usuarios->setEnabled(false);
         ui->actionRegistrar_Productos->setEnabled(false);
+        ui->actionModificar_Producto->setEnabled(false);
     }
 }
 
