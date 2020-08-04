@@ -36,13 +36,15 @@ int creaBaseDatos()
 }
 
 
-void configuraBaseDatos()
+void configuraBaseDatos(QString usuario, QString clave)
 {
     QSqlQuery q;
     q.exec("CREATE TABLE IF NOT EXISTS vendedor(id INTEGER PRIMARY KEY NOT NULL,"
            "nombre TEXT NOT NULL UNIQUE, clave TEXT NOT NULL, isAdmin TEXT NOT NULL)");
 
-    q.exec("INSERT INTO vendedor (id, nombre, clave,isAdmin) VALUES (1,'admin', '123456', 'Administrador')");
+    q.exec(QString("INSERT INTO vendedor (id, nombre, clave,isAdmin) VALUES (1,'%1', '%2', 'Administrador')")
+           .arg(usuario)
+           .arg(clave));
 
     q.exec("CREATE TABLE IF NOT EXISTS producto(id INTEGER PRIMARY KEY NOT NULL,"
            "nombre TEXT NOT NULL, marca TEXT NOT NULL , precio DOUBLE NOT NULL, cantidad INT NOT NULL)");
@@ -58,7 +60,7 @@ void main(int argc, char *argv[])
     {
         return ;
     }
-    configuraBaseDatos();
+    configuraBaseDatos("admin", "1234");
 
     std::unique_ptr<QApplication> aplicacion;
     aplicacion = std::make_unique<QApplication> (argc, argv);
