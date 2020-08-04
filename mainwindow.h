@@ -21,8 +21,10 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     void setPrivilegios(bool isAdministrador);
-    static void insertarAdmin(Administrador *adm, Vendedor *ven);
-    static void insertarVendedor(Administrador *adm, Vendedor *ven);
+
+    template<typename Tipo>
+    void insertarUsuario(Tipo *usuario);
+
     int getStatus();
     void closeEvent (QCloseEvent *event);
     ~MainWindow();

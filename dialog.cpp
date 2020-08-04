@@ -8,9 +8,6 @@
 #include <QMessageBox>
 #include <QSqlQuery>
 #include <QSqlError>
-#include <QDebug>
-#include <QMap>
-#include <QtAlgorithms>
 
 Dialog::Dialog(QWidget *parent)
     : QDialog(parent)
@@ -52,6 +49,7 @@ Dialog::~Dialog()
 {
     delete ui;
 }
+
 
 void Dialog::on_buttonBoxLogin_accepted()
 {

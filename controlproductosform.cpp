@@ -70,11 +70,8 @@ void ControlProductosForm::on_tableViewProductos_clicked(const QModelIndex &inde
     filaID = modeloProducto->data(index).toInt();
 }
 
+
 int ControlProductosForm::getFilaID()
 {
     return filaID;
 }
-
-
-
-

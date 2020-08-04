@@ -6,6 +6,8 @@
 #include "registrarvendedordialog.h"
 #include "modificarproductodialog.h"
 #include "dialog.h"
+#include "administrador.h"
+#include "vendedor.h"
 
 #include <QMessageBox>
 #include <QMdiSubWindow>
@@ -18,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-//    setCentralWidget(ui->mdiArea);
+    setCentralWidget(ui->mdiArea);
     status= 0;
 }
 
@@ -62,27 +64,18 @@ void MainWindow::on_actionRegistrar_Productos_triggered()
     on_actionMostrar_Productos_triggered();
 }
 
-void MainWindow::insertarAdmin(Administrador *adm, Vendedor *ven)
+template<typename Tipo>
+void MainWindow::insertarUsuario(Tipo *usuario)
 {
     QSqlQuery q;
     q.exec(QString("INSERT INTO vendedor (nombre, clave, isAdmin) VALUES ('%1', '%2', '%3')")
-           .arg(adm->getNombre())
-           .arg(adm->getClave())
-           .arg(adm->getPrivilegios()) );
-    delete ven;
-    delete adm;
+           .arg(usuario->getNombre())
+           .arg(usuario->getClave())
+           .arg(usuario->getPrivilegios()) );
+    delete usuario;
 }
 
-void MainWindow::insertarVendedor(Administrador *adm, Vendedor *ven)
-{
-    QSqlQuery q;
-    q.exec(QString("INSERT INTO vendedor (nombre, clave, isAdmin) VALUES ('%1', '%2', '%3')")
-           .arg(ven->getNombre())
-           .arg(ven->getClave())
-           .arg(ven->getPrivilegios()) );
-    delete adm;
-    delete ven;
-}
+
 
 void MainWindow::on_actionRegistrar_Usuarios_triggered()
 {
@@ -94,9 +87,17 @@ void MainWindow::on_actionRegistrar_Usuarios_triggered()
 
     auto *vend = new Vendedor(d.getVendedor());
     auto *admi = new Administrador( d.getAdministrador());
-    void (*funcion) (Administrador*, Vendedor*);
-    (vend->getNombre() == "")?(funcion = insertarAdmin):(funcion = insertarVendedor);
-    funcion(admi, vend);
+
+    if(vend->getNombre() == "")
+    {
+        insertarUsuario<Administrador>(admi);
+        delete vend;
+    }
+    else
+    {
+        insertarUsuario<Vendedor>(vend);
+        delete admi;
+    }
 
     ui->mdiArea->closeAllSubWindows();
     on_actionMostrar_Usuarios_triggered();
