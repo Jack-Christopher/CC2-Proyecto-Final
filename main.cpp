@@ -23,7 +23,6 @@ namespace databaseInfo
 
 int crea_configuraBaseDatos(QString usuario, QString clave)
 {
-    //std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
     DataBase *db = DataBase::getInstance(databaseInfo::NOMBRE_CONEXION);
 
@@ -34,7 +33,7 @@ int crea_configuraBaseDatos(QString usuario, QString clave)
 }
 
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     int Salir = 0;
 
@@ -54,7 +53,7 @@ void main(int argc, char *argv[])
 
         if (login.exec() == QDialog::Rejected)
         {
-            return ;
+            return -1;
         }
 
         MainWindow mainWindow;
@@ -64,4 +63,5 @@ void main(int argc, char *argv[])
         aplicacion->exec();
         Salir = mainWindow.getStatus();
     }
+    return 0;
 }

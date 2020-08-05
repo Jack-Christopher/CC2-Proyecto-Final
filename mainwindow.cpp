@@ -67,8 +67,6 @@ void MainWindow::on_actionRegistrar_Productos_triggered()
 
     db->doQuery(query);
 
-
-    delete ctrlP;
     ui->mdiArea->closeAllSubWindows();
 
     on_actionMostrar_Productos_triggered();
