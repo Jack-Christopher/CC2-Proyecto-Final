@@ -31,8 +31,7 @@ void ControlVendedoresForm::configurarTabla()
 
 void ControlVendedoresForm::on_pushButtonEliminarU_clicked()
 {
-    DataBaseFunctions dbf;
-    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
+    QString nombreDeConexion =  DataBaseFunctions::getThreadId("Conexion_", std::this_thread::get_id());
 
     DataBase *db = DataBase::getInstance(nombreDeConexion);
 
@@ -46,8 +45,7 @@ void ControlVendedoresForm::on_pushButtonEliminarU_clicked()
 
 void ControlVendedoresForm::givePrivilegios(int fila)
 {
-    DataBaseFunctions dbf;
-    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
+    QString nombreDeConexion =  DataBaseFunctions::getThreadId("Conexion_", std::this_thread::get_id());
 
     DataBase *db = DataBase::getInstance(nombreDeConexion);
 
@@ -60,8 +58,7 @@ void ControlVendedoresForm::givePrivilegios(int fila)
 
 void ControlVendedoresForm::removePrivilegios(int fila)
 {
-    DataBaseFunctions dbf;
-    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
+    QString nombreDeConexion =  DataBaseFunctions::getThreadId("Conexion_", std::this_thread::get_id());
 
     DataBase *db = DataBase::getInstance(nombreDeConexion);
 
@@ -75,8 +72,7 @@ void ControlVendedoresForm::removePrivilegios(int fila)
 
 void ControlVendedoresForm::on_pushButtonCambiarPrivilegios_clicked()
 {
-    DataBaseFunctions dbf;
-    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
+    QString nombreDeConexion =  DataBaseFunctions::getThreadId("Conexion_", std::this_thread::get_id());
 
     DataBase *db = DataBase::getInstance(nombreDeConexion);
 

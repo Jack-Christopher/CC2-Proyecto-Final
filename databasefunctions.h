@@ -12,7 +12,7 @@ public:
     DataBaseFunctions();
     Producto operator()(int index);
     void operator()(Producto p1, int index);
-    QString getThreadId(QString conexion, std::thread::id id);
+    static QString getThreadId(QString conexion, std::thread::id id);
 };
 
 #endif // DATABASEFUNCTIONS_H

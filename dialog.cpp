@@ -18,8 +18,7 @@ Dialog::Dialog(QWidget *parent)
     ui->setupUi(this);
     ui->claveLineEdit->setEchoMode(QLineEdit::Password);
 
-    DataBaseFunctions dbf;
-    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
+    QString nombreDeConexion =  DataBaseFunctions::getThreadId("Conexion_", std::this_thread::get_id());
 
     DataBase *db = DataBase::getInstance(nombreDeConexion);
 

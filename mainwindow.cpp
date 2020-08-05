@@ -54,8 +54,7 @@ void MainWindow::on_actionRegistrar_Productos_triggered()
     }
     auto prod = p.getProducto();
 
-    DataBaseFunctions dbf;
-    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
+    QString nombreDeConexion =  DataBaseFunctions::getThreadId("Conexion_", std::this_thread::get_id());
 
     DataBase *db = DataBase::getInstance(nombreDeConexion);
 
@@ -75,8 +74,7 @@ void MainWindow::on_actionRegistrar_Productos_triggered()
 template<typename Tipo>
 void MainWindow::insertarUsuario(Tipo *usuario)
 {
-    DataBaseFunctions dbf;
-    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
+    QString nombreDeConexion =  DataBaseFunctions::getThreadId("Conexion_", std::this_thread::get_id());
 
     DataBase *db = DataBase::getInstance(nombreDeConexion);
 
@@ -163,9 +161,7 @@ void MainWindow::on_actionModificar_Producto_triggered()
     }
     auto prod = mp.getProducto();
 
-
-    DataBaseFunctions dbf;
-    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
+    QString nombreDeConexion =  DataBaseFunctions::getThreadId("Conexion_", std::this_thread::get_id());
 
     DataBase *db = DataBase::getInstance(nombreDeConexion);
 

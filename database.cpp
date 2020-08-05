@@ -91,9 +91,6 @@ void DataBase::doQuery(QVector<std::tuple<QString,QString,QString>> &secuenciaDe
         secuenciaDeUsuarios.append(Usuario);
     }
 
-    std::tuple<QString,QString,QString> Usuario("admin", "123", "Administrador");
-
-    secuenciaDeUsuarios.append(Usuario);
 }
 
 QSqlQuery DataBase::doQuery(QString query)

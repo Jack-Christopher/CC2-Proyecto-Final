@@ -40,6 +40,8 @@ int main(int argc, char *argv[])
     std::unique_ptr<QApplication> aplicacion;
     aplicacion = std::make_unique<QApplication> (argc, argv);
 
+
+
     std::thread t1(crea_configuraBaseDatos, "admin", "123");
 
     t1.join();

@@ -42,8 +42,7 @@ Producto DataBaseFunctions::operator()(int index)
 
 void DataBaseFunctions::operator()(Producto p1, int index)
 {
-    DataBaseFunctions dbf;
-    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
+    QString nombreDeConexion =  DataBaseFunctions::getThreadId("Conexion_", std::this_thread::get_id());
 
     DataBase *db = DataBase::getInstance(nombreDeConexion);
 
@@ -71,3 +70,7 @@ QString DataBaseFunctions::getThreadId(QString conexion, std::thread::id id)
 
     return nombreDeConexion;
 }
+
+
+
+
