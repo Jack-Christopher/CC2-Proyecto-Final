@@ -8,6 +8,8 @@
 #include "dialog.h"
 #include "administrador.h"
 #include "vendedor.h"
+#include "databasefunctions.h"
+#include "database.h"
 
 #include <QMessageBox>
 #include <QMdiSubWindow>
@@ -51,12 +53,20 @@ void MainWindow::on_actionRegistrar_Productos_triggered()
         return;
     }
     auto prod = p.getProducto();
-    QSqlQuery q;
-    q.exec(QString("INSERT INTO producto (nombre, marca, precio, cantidad) VALUES ('%1', '%2', '%3', '%4')")
-           .arg(prod.getNombreP())
-           .arg(prod.getMarcaP())
-           .arg(prod.getPrecio())
-           .arg(prod.getCantidad())  );
+
+    DataBaseFunctions dbf;
+    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
+
+    DataBase *db = DataBase::getInstance(nombreDeConexion);
+
+    QString query = QString("INSERT INTO producto (nombre, marca, precio, cantidad) VALUES ('%1', '%2', '%3', '%4')")
+            .arg(prod.getNombreP())
+            .arg(prod.getMarcaP())
+            .arg(prod.getPrecio())
+            .arg(prod.getCantidad()) ;
+
+    db->doQuery(query);
+
 
     delete ctrlP;
     ui->mdiArea->closeAllSubWindows();
@@ -67,11 +77,17 @@ void MainWindow::on_actionRegistrar_Productos_triggered()
 template<typename Tipo>
 void MainWindow::insertarUsuario(Tipo *usuario)
 {
-    QSqlQuery q;
-    q.exec(QString("INSERT INTO vendedor (nombre, clave, isAdmin) VALUES ('%1', '%2', '%3')")
-           .arg(usuario->getNombre())
-           .arg(usuario->getClave())
-           .arg(usuario->getPrivilegios()) );
+    DataBaseFunctions dbf;
+    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
+
+    DataBase *db = DataBase::getInstance(nombreDeConexion);
+
+    QString query = QString("INSERT INTO vendedor (nombre, clave, isAdmin) VALUES ('%1', '%2', '%3')")
+            .arg(usuario->getNombre())
+            .arg(usuario->getClave())
+            .arg(usuario->getPrivilegios());
+    db->doQuery(query);
+
     delete usuario;
 }
 
@@ -148,15 +164,22 @@ void MainWindow::on_actionModificar_Producto_triggered()
         return;
     }
     auto prod = mp.getProducto();
-    QSqlQuery q;
 
-    q.exec(QString("UPDATE producto set nombre='%1', marca='%2' , precio='%3',"
+
+    DataBaseFunctions dbf;
+    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
+
+    DataBase *db = DataBase::getInstance(nombreDeConexion);
+
+    QString query = QString("UPDATE producto set nombre='%1', marca='%2' , precio='%3',"
                    " cantidad='%4'  WHERE id='%5'")
            .arg(prod.getNombreP())
            .arg(prod.getMarcaP())
            .arg(prod.getPrecio())
            .arg(prod.getCantidad())
-           .arg(ctrlP->getFilaID()));
+           .arg(ctrlP->getFilaID());
+
+    db->doQuery(query);
 
     delete ctrlP;
     ctrlP = new ControlProductosForm(this);

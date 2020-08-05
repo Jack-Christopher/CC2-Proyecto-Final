@@ -2,7 +2,12 @@
 #include <QSqlQuery>
 #include <QString>
 #include <QVariant>
+#include <thread>
+#include <sstream>
 #include "producto.h"
+#include "database.h"
+#include "database.h"
+
 
 DataBaseFunctions::DataBaseFunctions()
 {
@@ -12,8 +17,14 @@ DataBaseFunctions::DataBaseFunctions()
 
 Producto DataBaseFunctions::operator()(int index)
 {
-    QSqlQuery q;
-    q.exec(QString( "SELECT nombre, marca, precio, cantidad FROM producto WHERE id == '%1' ").arg(index));
+    DataBaseFunctions dbf;
+    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
+
+    DataBase *db = DataBase::getInstance(nombreDeConexion);
+
+    QString query = QString( "SELECT nombre, marca, precio, cantidad FROM producto WHERE id == '%1' ").arg(index);
+
+    QSqlQuery q = db->doQuery(query);
     q.next();
 
     QString nombre = q.value(0).toString();
@@ -33,12 +44,32 @@ Producto DataBaseFunctions::operator()(int index)
 
 void DataBaseFunctions::operator()(Producto p1, int index)
 {
-    QSqlQuery q;
-    q.exec(QString("UPDATE producto SET nombre = '%1', marca = '%2', precio = '%3', cantidad = '%4' WHERE id = '%5'")
-           .arg(p1.getNombreP())
-           .arg(p1.getMarcaP())
-           .arg(p1.getPrecio())
-           .arg(p1.getCantidad())
-           .arg(index));
+    DataBaseFunctions dbf;
+    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
+
+    DataBase *db = DataBase::getInstance(nombreDeConexion);
+
+    QString query = QString("UPDATE producto SET nombre = '%1', marca = '%2', precio = '%3', cantidad = '%4' WHERE id = '%5'")
+             .arg(p1.getNombreP())
+             .arg(p1.getMarcaP())
+             .arg(p1.getPrecio())
+             .arg(p1.getCantidad())
+             .arg(index);
+
+    db->doQuery(query);
 }
 
+
+QString DataBaseFunctions::getThreadId(QString conexion, std::thread::id id)
+{
+    QString nombreDeConexion = conexion;
+    auto threadId = id;
+
+    std::ostringstream ss;
+    ss << threadId;
+    std::string sId = ss.str();
+
+    nombreDeConexion += QString::fromStdString( sId);
+
+    return nombreDeConexion;
+}

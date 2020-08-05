@@ -4,6 +4,8 @@
 #include "registrarproductodialog.h"
 #include "mainwindow.h"
 #include "vendedor.h"
+#include "database.h"
+#include "databasefunctions.h"
 
 #include <QMessageBox>
 #include <QSqlQuery>
@@ -16,19 +18,13 @@ Dialog::Dialog(QWidget *parent)
     ui->setupUi(this);
     ui->claveLineEdit->setEchoMode(QLineEdit::Password);
 
-    QSqlQuery q;
+    DataBaseFunctions dbf;
+    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
 
-    q.exec("SELECT nombre, clave, isAdmin FROM vendedor");
+    DataBase *db = DataBase::getInstance(nombreDeConexion);
 
-    while (q.next())
-    {
-        QString nombre = q.value(0).toString();
-        QString clave = q.value(1).toString();
-        QString isAdmin = q.value(2).toString();
-        std::tuple<QString,QString,QString> Usuario(nombre, clave, isAdmin);
+    db->doQuery(secuenciaDeUsuarios);
 
-        secuenciaDeUsuarios.append(Usuario);
-    }
 
     int i, j, min_idx;
 
@@ -50,6 +46,10 @@ Dialog::~Dialog()
     delete ui;
 }
 
+void Dialog::saludar()
+{
+    QMessageBox::information(this, " ", "¡Bienvenido!");
+}
 
 void Dialog::on_buttonBoxLogin_accepted()
 {
@@ -67,6 +67,8 @@ void Dialog::on_buttonBoxLogin_accepted()
     if (LoginOK)
     {
         (privilegios == "Administrador")?(isAdmin = true):(isAdmin = false);
+
+        saludar();
     }
     else
     {

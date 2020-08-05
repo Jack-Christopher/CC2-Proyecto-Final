@@ -15,6 +15,7 @@ class Dialog : public QDialog
 public:
     Dialog(QWidget *parent = nullptr);
     bool getIsAdmin();
+    void saludar();
     ~Dialog();
 
 private slots:

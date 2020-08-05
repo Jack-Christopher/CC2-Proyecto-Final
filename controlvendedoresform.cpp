@@ -2,6 +2,8 @@
 #include "ui_controlvendedoresform.h"
 #include <QSqlTableModel>
 #include <QSqlQuery>
+#include "database.h"
+#include "databasefunctions.h"
 
 ControlVendedoresForm::ControlVendedoresForm(QWidget *parent) :
     QWidget(parent),
@@ -19,54 +21,71 @@ ControlVendedoresForm::~ControlVendedoresForm()
 void ControlVendedoresForm::configurarTabla()
 {
 
-    modeloVendedor = new QSqlTableModel(this);
-    modeloVendedor->setTable("vendedor");
-    modeloVendedor->select();
+    modeloVendedor = DataBase::newtablemodel(modeloVendedor,this);
+
     ui->tableViewVendedor->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableViewVendedor->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    modeloVendedor->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
-    modeloVendedor->setHeaderData(1, Qt::Horizontal, QObject::tr("Nombre"));
-    modeloVendedor->setHeaderData(2, Qt::Horizontal, QObject::tr("Clave"));
-    modeloVendedor->setHeaderData(3, Qt::Horizontal, QObject::tr("Privilegios"));
     ui->tableViewVendedor->setModel(modeloVendedor);
+
 }
 
 void ControlVendedoresForm::on_pushButtonEliminarU_clicked()
 {
-    QSqlQuery q;
+    DataBaseFunctions dbf;
+    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
 
-    q.exec(QString("DELETE FROM vendedor WHERE id ==  '%1' ").arg(filaID));
+    DataBase *db = DataBase::getInstance(nombreDeConexion);
+
+    QString query = QString("DELETE FROM vendedor WHERE id ==  '%1' ").arg(filaID);
+
+    db->doQuery(query);
+
     delete modeloVendedor;
     configurarTabla();
 }
 
 void ControlVendedoresForm::givePrivilegios(int fila)
 {
-    QSqlQuery q;
+    DataBaseFunctions dbf;
+    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
 
-    q.exec(QString("UPDATE vendedor set isAdmin='%1'  WHERE id='%2'")
-           .arg("Administrador")
-           .arg(fila));
+    DataBase *db = DataBase::getInstance(nombreDeConexion);
 
+    QString query = QString("UPDATE vendedor set isAdmin='%1'  WHERE id='%2'")
+            .arg("Administrador")
+            .arg(fila);
+
+    db->doQuery(query);
 }
 
 void ControlVendedoresForm::removePrivilegios(int fila)
 {
-    QSqlQuery q;
+    DataBaseFunctions dbf;
+    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
 
-    q.exec(QString("UPDATE vendedor set isAdmin='%1'  WHERE id='%2'")
-           .arg("No Administrador")
-           .arg(fila));
+    DataBase *db = DataBase::getInstance(nombreDeConexion);
+
+    QString query = QString("UPDATE vendedor set isAdmin='%1'  WHERE id='%2'")
+            .arg("No Administrador")
+            .arg(fila);
+
+    db->doQuery(query);
 }
 
 
 void ControlVendedoresForm::on_pushButtonCambiarPrivilegios_clicked()
 {
-    QSqlQuery q;
+    DataBaseFunctions dbf;
+    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
 
-    q.exec(QString("SELECT isAdmin FROM vendedor WHERE id='%1'")
-           .arg(filaID));
+    DataBase *db = DataBase::getInstance(nombreDeConexion);
+
+    QString query = QString("SELECT isAdmin FROM vendedor WHERE id='%1'")
+            .arg(filaID);
+
+    auto q = db->doQuery(query);
     q.first();
+
     QString esAdmin;
     esAdmin = q.value(0).toString();
 

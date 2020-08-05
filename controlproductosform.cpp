@@ -5,6 +5,7 @@
 #include <QDebug>
 
 #include "databasefunctions.h"
+#include "database.h"
 
 ControlProductosForm::ControlProductosForm(QWidget *parent) :
     QWidget(parent),
@@ -21,25 +22,26 @@ ControlProductosForm::~ControlProductosForm()
 
 void ControlProductosForm::configurarTabla()
 {
-    modeloProducto = new QSqlTableModel(this);
-    modeloProducto->setTable("producto");
-    modeloProducto->select();
+    modeloProducto = DataBase::newtablemodel(modeloProducto,this);
+
     ui->tableViewProductos->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableViewProductos->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    modeloProducto->setHeaderData(0, Qt::Horizontal, QObject::tr("ID"));
-    modeloProducto->setHeaderData(1, Qt::Horizontal, QObject::tr("Nombre"));
-    modeloProducto->setHeaderData(2, Qt::Horizontal, QObject::tr("Marca"));
-    modeloProducto->setHeaderData(3, Qt::Horizontal, QObject::tr("Precio"));
-    modeloProducto->setHeaderData(4, Qt::Horizontal, QObject::tr("Cantidad"));
     ui->tableViewProductos->setModel(modeloProducto);
 }
 
 
 void ControlProductosForm::on_pushButtonEliminarP_clicked()
 {
-    QSqlQuery q;
+    DataBaseFunctions dbf;
+    QString nombreDeConexion =  dbf.getThreadId("Conexion_", std::this_thread::get_id());
 
-    q.exec(QString("DELETE FROM producto WHERE id ==  '%1' ").arg(filaID));
+    DataBase *db = DataBase::getInstance(nombreDeConexion);
+
+    QString query = QString("DELETE FROM producto WHERE id ==  '%1' ").arg(filaID);
+
+    db->doQuery(query);
+
+
     delete modeloProducto;
     configurarTabla();
 

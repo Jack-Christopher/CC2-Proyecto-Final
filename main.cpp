@@ -1,53 +1,36 @@
 #include "dialog.h"
 #include "mainwindow.h"
+#include "database.h"
+#include "databasefunctions.h"
 
 #include <QApplication>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDebug>
+#include <thread>
+#include <QDebug>
+#include <sstream>
 
 
 namespace databaseInfo
 {
-    const static QString DRIVER = "QSQLITE";
-    const static QString NOMBRE_BASE_DATOS  = "./data.db";
+    const QString DRIVER = "QSQLITE";
+    const QString NOMBRE_BASE_DATOS  = "./data.db";
+    const QString NOMBRE_CONEXION = "Conexion_";
 }
 
 
-int creaBaseDatos()
+int crea_configuraBaseDatos(QString usuario, QString clave)
 {
-    if (!QSqlDatabase::isDriverAvailable(databaseInfo::DRIVER))
-    {
-        qDebug() << "Driver no existe";
-        return -1;
-    }
-    else
-    {
-        auto db = QSqlDatabase::addDatabase(databaseInfo::DRIVER);
-        db.setDatabaseName(databaseInfo::NOMBRE_BASE_DATOS);
-        if (!db.open())
-        {
-            qDebug() << db.lastError().text();
-            return -2;
-        }
-    }
-    return 0;
-}
+    //std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
+    DataBase *db = DataBase::getInstance(databaseInfo::NOMBRE_CONEXION);
 
-void configuraBaseDatos(QString usuario, QString clave)
-{
-    QSqlQuery q;
-    q.exec("CREATE TABLE IF NOT EXISTS vendedor(id INTEGER PRIMARY KEY NOT NULL,"
-           "nombre TEXT NOT NULL UNIQUE, clave TEXT NOT NULL, isAdmin TEXT NOT NULL)");
+    int resultado = db->doQuery(usuario, clave);
 
-    q.exec(QString("INSERT INTO vendedor (id, nombre, clave,isAdmin) VALUES (1,'%1', '%2', 'Administrador')")
-           .arg(usuario)
-           .arg(clave));
+    return resultado;
 
-    q.exec("CREATE TABLE IF NOT EXISTS producto(id INTEGER PRIMARY KEY NOT NULL,"
-           "nombre TEXT NOT NULL, marca TEXT NOT NULL , precio DOUBLE NOT NULL, cantidad INT NOT NULL)");
 }
 
 
@@ -55,15 +38,13 @@ void main(int argc, char *argv[])
 {
     int Salir = 0;
 
-    const int resultado = creaBaseDatos();
-    if (resultado < 0)
-    {
-        return ;
-    }
-    configuraBaseDatos("admin", "1234");
-
     std::unique_ptr<QApplication> aplicacion;
     aplicacion = std::make_unique<QApplication> (argc, argv);
+
+    std::thread t1(crea_configuraBaseDatos, "admin", "123");
+
+    t1.join();
+
 
     while(Salir != 2)
     {
