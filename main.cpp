@@ -5,9 +5,9 @@ int main(int argc, char *argv[])
 {    
     Facade f;
 
-    auto smartPointerToApp = f.getSmartPointer(argc, argv);
-
     f.ejecutarConfiguracion();
+
+    auto smartPointerToApp = f.getSmartPointer(argc, argv);
 
     auto resultado = f.ejecutarAplicacion(smartPointerToApp);
 
