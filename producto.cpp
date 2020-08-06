@@ -15,7 +15,7 @@ Producto::Producto(int id , const QString &nombre , const QString &marca, const 
 
 void Producto::operator-- (int n)
 {
-    cantidadProducto--;
+    cantidadProducto --;
 }
 
 void Producto::operator= (Producto newProducto)

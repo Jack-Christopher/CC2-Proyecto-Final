@@ -128,3 +128,4 @@ QSqlTableModel *DataBase::newtablemodel(QSqlTableModel * modelo, ControlVendedor
     return modelo;
 }
 
+
